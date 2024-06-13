@@ -10,7 +10,7 @@ import java.util.*;
 @Component
 class GithubRepositoryMapper {
     
-    static List<GithubRepository> mapRepositoryReceivedDtoArrayToGithubRepositoryList(RepositoryReceivedDto[] array) {
+    public static List<GithubRepository> mapRepositoryReceivedDtoArrayToGithubRepositoryList(RepositoryReceivedDto[] array) {
         return Arrays.stream(array)
                      .map(GithubRepositoryMapper::mapRepositoryReceivedDtoToGithubRepository)
                      .toList();

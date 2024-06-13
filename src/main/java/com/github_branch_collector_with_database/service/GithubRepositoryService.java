@@ -7,6 +7,7 @@ import com.github_branch_collector_with_database.error.XmlFormatException;
 import com.github_branch_collector_with_database.received.BranchReceivedDto;
 import com.github_branch_collector_with_database.received.RepositoryReceivedDto;
 import com.github_branch_collector_with_database.response.RepositoryResponseDto;
+import com.github_branch_collector_with_database.service.github_repo_services.GithubRepoDatabaseService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -15,13 +16,19 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import java.util.List;
 
+import static com.github_branch_collector_with_database.service.GithubBranchMapper.mapBranchReceivedDtoArrayToGithubBranchList;
+import static com.github_branch_collector_with_database.service.GithubRepositoryMapper.*;
+
+
 @Log4j2
 @Service
 public class GithubRepositoryService {
     
     private final WebClient webClient;
+    private final GithubRepoDatabaseService databaseService;
     
-    public GithubRepositoryService(WebClient webClient) {
+    public GithubRepositoryService(GithubRepoDatabaseService databaseService, WebClient webClient) {
+        this.databaseService = databaseService;
         this.webClient = webClient;
     }
     
@@ -32,9 +39,9 @@ public class GithubRepositoryService {
         }
         try {
             List<GithubRepository> repos = fetchReposForUser(username);
-            List<GithubRepository> filteredRepos = GithubRepositoryMapper.filterNotForkedRepositoriesOnly(repos);
+            List<GithubRepository> filteredRepos = filterNotForkedRepositoriesOnly(repos);
             List<GithubRepository> combinedReposWithBranches = fitFetchedBranchesIntoRepositories(filteredRepos);
-            return GithubRepositoryMapper.mapGithubRepositoryListToRepositoryResponseDtoList(combinedReposWithBranches);
+            return mapGithubRepositoryListToRepositoryResponseDtoList(combinedReposWithBranches);
         } catch (WebClientResponseException e) {
             throw new UserNotFoundException();
         }
@@ -47,7 +54,9 @@ public class GithubRepositoryService {
                                                          .retrieve()
                                                          .bodyToMono(RepositoryReceivedDto[].class)
                                                          .block();
-        return GithubRepositoryMapper.mapRepositoryReceivedDtoArrayToGithubRepositoryList(receivedArray);
+        List<GithubRepository> githubRepositories = mapRepositoryReceivedDtoArrayToGithubRepositoryList(receivedArray);
+        databaseService.saveAllToDb(githubRepositories);
+        return githubRepositories;
     }
     
     private List<GithubBranch> fetchBranchesForRepository(GithubRepository repository) {
@@ -59,7 +68,7 @@ public class GithubRepositoryService {
                                                      .retrieve()
                                                      .bodyToMono(BranchReceivedDto[].class)
                                                      .block();
-        return GithubBranchMapper.mapBranchReceivedDtoArrayToGithubBranchList(receivedArray);
+        return mapBranchReceivedDtoArrayToGithubBranchList(receivedArray);
     }
     
     private List<GithubRepository> fitFetchedBranchesIntoRepositories(List<GithubRepository> repositories) {
