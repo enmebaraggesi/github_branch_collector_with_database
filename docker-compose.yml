@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+
+  db:
+    image: postgres
+    container_name: github_db
+    restart: always
+    ports:
+      - '54321:5432'
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: postgres
+    volumes:
+      - POSTGRESQL:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+
+  adminer:
+    image: dpage/pgadmin4
+    container_name: github_pgadmin
+    restart: always
+    ports:
+      - '8080:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: a@a.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - PGADMIN_DATA:/var/lib/pgadmin
+
+volumes:
+  POSTGRESQL:
+  PGADMIN_DATA:
