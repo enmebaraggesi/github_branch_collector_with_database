@@ -5,7 +5,7 @@ import org.springframework.data.repository.Repository;
 
 public interface GithubRepoRepository extends Repository<GithubRepo, Long> {
     
-    void save(GithubRepo githubRepo);
+    GithubRepo save(GithubRepo githubRepo);
 //    List<GithubRepo> findAll();
 //    GithubRepo findByOwner(String name);
 //    GithubRepo findById(Long id);
