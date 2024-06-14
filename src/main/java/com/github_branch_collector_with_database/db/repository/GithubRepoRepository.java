@@ -1,12 +1,17 @@
 package com.github_branch_collector_with_database.db.repository;
 
 import com.github_branch_collector_with_database.db.entity.GithubRepo;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+
+import java.util.List;
 
 public interface GithubRepoRepository extends Repository<GithubRepo, Long> {
     
     GithubRepo save(GithubRepo githubRepo);
-//    List<GithubRepo> findAll();
+    
+    @Query("SELECT r FROM GithubRepo r")
+    List<GithubRepo> findAll();
 //    GithubRepo findByOwner(String name);
 //    GithubRepo findById(Long id);
 //    boolean existsById(Long id);
