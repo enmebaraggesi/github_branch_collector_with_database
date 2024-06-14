@@ -1,9 +1,8 @@
 package com.github_branch_collector_with_database.service.github_repo_services;
 
-import com.github_branch_collector_with_database.controller.AllGithubRepsResponseDto;
-import com.github_branch_collector_with_database.controller.GithubRepoSingleResponseDto;
-import com.github_branch_collector_with_database.db.entity.GithubRepo;
 import com.github_branch_collector_with_database.domain.GithubRepository;
+import com.github_branch_collector_with_database.domain.entity.GithubRepo;
+import com.github_branch_collector_with_database.response.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,5 +23,12 @@ public class GithubRepoMapper {
     
     public GithubRepoSingleResponseDto mapGithubRepoToGithubRepoSingleResponseDto(GithubRepo repo) {
         return new GithubRepoSingleResponseDto(repo.getId(), repo.getName(), repo.getOwner());
+    }
+    
+    public AllForOwnerGithubRepsResponseDto mapGithubRepoListToAllForOwnerGithubRepsResponseDto(List<GithubRepo> repoList) {
+        List<GithubRepoSingleResponseDto> singleResponseDtoList = repoList.stream()
+                                                                          .map(this::mapGithubRepoToGithubRepoSingleResponseDto)
+                                                                          .toList();
+        return new AllForOwnerGithubRepsResponseDto(singleResponseDtoList);
     }
 }

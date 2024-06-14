@@ -1,8 +1,10 @@
 package com.github_branch_collector_with_database.service.github_repo_services;
 
-import com.github_branch_collector_with_database.controller.AllGithubRepsResponseDto;
-import com.github_branch_collector_with_database.db.entity.GithubRepo;
 import com.github_branch_collector_with_database.db.repository.GithubRepoRepository;
+import com.github_branch_collector_with_database.domain.entity.GithubRepo;
+import com.github_branch_collector_with_database.error.OwnerNotFoundException;
+import com.github_branch_collector_with_database.response.AllForOwnerGithubRepsResponseDto;
+import com.github_branch_collector_with_database.response.AllGithubRepsResponseDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,5 +23,17 @@ public class GithubRepoRetriever {
     public AllGithubRepsResponseDto findAll() {
         List<GithubRepo> githubRepoList = repository.findAll();
         return mapper.mapGithubRepoListToAllGithubRepsResponseDto(githubRepoList);
+    }
+    
+    public AllForOwnerGithubRepsResponseDto findAllForOwner(String owner) {
+        existsByOwner(owner);
+        List<GithubRepo> githubRepoList = repository.findAllByOwner(owner);
+        return mapper.mapGithubRepoListToAllForOwnerGithubRepsResponseDto(githubRepoList);
+    }
+    
+    private void existsByOwner(String owner) {
+        if (!repository.existsByOwner(owner)) {
+            throw new OwnerNotFoundException();
+        }
     }
 }

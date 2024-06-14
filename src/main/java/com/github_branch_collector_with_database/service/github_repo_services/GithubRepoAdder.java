@@ -1,8 +1,8 @@
 package com.github_branch_collector_with_database.service.github_repo_services;
 
-import com.github_branch_collector_with_database.db.entity.GithubRepo;
 import com.github_branch_collector_with_database.db.repository.GithubRepoRepository;
 import com.github_branch_collector_with_database.domain.GithubRepository;
+import com.github_branch_collector_with_database.domain.entity.GithubRepo;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;

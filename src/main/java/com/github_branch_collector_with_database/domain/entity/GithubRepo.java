@@ -1,4 +1,4 @@
-package com.github_branch_collector_with_database.db.entity;
+package com.github_branch_collector_with_database.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

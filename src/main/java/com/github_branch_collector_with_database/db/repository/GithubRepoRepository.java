@@ -1,6 +1,6 @@
 package com.github_branch_collector_with_database.db.repository;
 
-import com.github_branch_collector_with_database.db.entity.GithubRepo;
+import com.github_branch_collector_with_database.domain.entity.GithubRepo;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 
@@ -12,9 +12,11 @@ public interface GithubRepoRepository extends Repository<GithubRepo, Long> {
     
     @Query("SELECT r FROM GithubRepo r")
     List<GithubRepo> findAll();
-//    GithubRepo findByOwner(String name);
-//    GithubRepo findById(Long id);
-//    boolean existsById(Long id);
+    
+    @Query("SELECT r FROM GithubRepo r WHERE r.owner = :owner")
+    List<GithubRepo> findAllByOwner(String owner);
+    
+    boolean existsByOwner(String owner);
 //    GithubRepo updateById(Long id, GithubRepo githubRepo);
 //    void deleteById(Long id);
 }
