@@ -42,4 +42,8 @@ public class GithubRepoMapper {
                                                       + ". Current name: " + githubRepo.getName()
                                                       + ", owner: " + githubRepo.getOwner());
     }
+    
+    public DeleteGithubRepoResponseDto mapIdToDeleteGithubRepoResponseDto(Long id) {
+        return new DeleteGithubRepoResponseDto("Deleted song with id: " + id);
+    }
 }

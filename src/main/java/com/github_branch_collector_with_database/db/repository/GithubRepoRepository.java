@@ -1,6 +1,7 @@
 package com.github_branch_collector_with_database.db.repository;
 
 import com.github_branch_collector_with_database.domain.entity.GithubRepo;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 
@@ -22,5 +23,8 @@ public interface GithubRepoRepository extends Repository<GithubRepo, Long> {
     GithubRepo findById(Long id);
     
     boolean existsById(Long id);
-//    void deleteById(Long id);
+    
+    @Modifying
+    @Query("DELETE FROM GithubRepo r WHERE r.id = :id")
+    void deleteById(Long id);
 }

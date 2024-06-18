@@ -31,4 +31,9 @@ public class RepositoryDbController {
                                                                            @RequestBody PatchGithubRepoRequestDto requestDto) {
         return ResponseEntity.ok(service.patchRepositoryById(id, requestDto));
     }
+    
+    @DeleteMapping("{id}")
+    public ResponseEntity<DeleteGithubRepoResponseDto> deleteRepositoryById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.deleteById(id));
+    }
 }
