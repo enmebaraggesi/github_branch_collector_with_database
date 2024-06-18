@@ -2,6 +2,7 @@ package com.github_branch_collector_with_database.service.github_repo_services;
 
 import com.github_branch_collector_with_database.domain.GithubRepository;
 import com.github_branch_collector_with_database.domain.entity.GithubRepo;
+import com.github_branch_collector_with_database.request.PatchGithubRepoRequestDto;
 import com.github_branch_collector_with_database.response.*;
 import org.springframework.stereotype.Component;
 
@@ -30,5 +31,15 @@ public class GithubRepoMapper {
                                                                           .map(this::mapGithubRepoToGithubRepoSingleResponseDto)
                                                                           .toList();
         return new AllForOwnerGithubRepsResponseDto(singleResponseDtoList);
+    }
+    
+    public GithubRepo mapPatchGithubRepoRequestDtoToGithubRepo(PatchGithubRepoRequestDto requestDto) {
+        return new GithubRepo(requestDto.name(), requestDto.owner());
+    }
+    
+    public PatchGithubRepoResponseDto mapGithubRepoToPatchGithubRepoResponseDto(GithubRepo githubRepo) {
+        return new PatchGithubRepoResponseDto("Patched repository by id: " + githubRepo.getId()
+                                                      + ". Current name: " + githubRepo.getName()
+                                                      + ", owner: " + githubRepo.getOwner());
     }
 }

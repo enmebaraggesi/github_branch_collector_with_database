@@ -17,6 +17,10 @@ public interface GithubRepoRepository extends Repository<GithubRepo, Long> {
     List<GithubRepo> findAllByOwner(String owner);
     
     boolean existsByOwner(String owner);
-//    GithubRepo updateById(Long id, GithubRepo githubRepo);
+    
+    @Query("SELECT r FROM GithubRepo r WHERE r.id = :id")
+    GithubRepo findById(Long id);
+    
+    boolean existsById(Long id);
 //    void deleteById(Long id);
 }
