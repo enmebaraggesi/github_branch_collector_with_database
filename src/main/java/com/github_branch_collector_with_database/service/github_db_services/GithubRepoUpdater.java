@@ -1,4 +1,4 @@
-package com.github_branch_collector_with_database.service.github_repo_services;
+package com.github_branch_collector_with_database.service.github_db_services;
 
 import com.github_branch_collector_with_database.domain.entity.GithubRepo;
 import jakarta.transaction.Transactional;
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Transactional
 @Service
-public class GithubRepoUpdater {
+class GithubRepoUpdater {
     
     private final GithubRepoRetriever retriever;
     
-    public GithubRepoUpdater(GithubRepoRetriever retriever) {
+    GithubRepoUpdater(GithubRepoRetriever retriever) {
         this.retriever = retriever;
     }
     

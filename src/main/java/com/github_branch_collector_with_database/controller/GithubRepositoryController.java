@@ -1,7 +1,7 @@
 package com.github_branch_collector_with_database.controller;
 
 import com.github_branch_collector_with_database.response.RepositoryResponseDto;
-import com.github_branch_collector_with_database.service.GithubRepositoryService;
+import com.github_branch_collector_with_database.service.github_repository_services.GithubRepositoryService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 

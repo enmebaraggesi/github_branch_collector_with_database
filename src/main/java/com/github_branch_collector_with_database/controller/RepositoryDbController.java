@@ -2,7 +2,7 @@ package com.github_branch_collector_with_database.controller;
 
 import com.github_branch_collector_with_database.request.PatchGithubRepoRequestDto;
 import com.github_branch_collector_with_database.response.*;
-import com.github_branch_collector_with_database.service.github_repo_services.GithubRepoDatabaseService;
+import com.github_branch_collector_with_database.service.github_db_services.GithubRepoDatabaseService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;

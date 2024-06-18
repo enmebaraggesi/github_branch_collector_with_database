@@ -1,4 +1,4 @@
-package com.github_branch_collector_with_database.service;
+package com.github_branch_collector_with_database.service.github_repository_services;
 
 import com.github_branch_collector_with_database.domain.GithubBranch;
 import com.github_branch_collector_with_database.domain.GithubRepository;
@@ -7,7 +7,7 @@ import com.github_branch_collector_with_database.error.XmlFormatException;
 import com.github_branch_collector_with_database.received.BranchReceivedDto;
 import com.github_branch_collector_with_database.received.RepositoryReceivedDto;
 import com.github_branch_collector_with_database.response.RepositoryResponseDto;
-import com.github_branch_collector_with_database.service.github_repo_services.GithubRepoDatabaseService;
+import com.github_branch_collector_with_database.service.github_db_services.GithubRepoDatabaseService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -17,8 +17,8 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import java.util.List;
 
-import static com.github_branch_collector_with_database.service.GithubBranchMapper.mapBranchReceivedDtoArrayToGithubBranchList;
-import static com.github_branch_collector_with_database.service.GithubRepositoryMapper.*;
+import static com.github_branch_collector_with_database.service.github_repository_services.GithubBranchMapper.mapBranchReceivedDtoArrayToGithubBranchList;
+import static com.github_branch_collector_with_database.service.github_repository_services.GithubRepositoryMapper.*;
 
 
 @Log4j2

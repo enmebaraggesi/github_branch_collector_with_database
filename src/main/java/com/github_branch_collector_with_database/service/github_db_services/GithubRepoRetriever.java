@@ -1,36 +1,30 @@
-package com.github_branch_collector_with_database.service.github_repo_services;
+package com.github_branch_collector_with_database.service.github_db_services;
 
 import com.github_branch_collector_with_database.db.repository.GithubRepoRepository;
 import com.github_branch_collector_with_database.domain.entity.GithubRepo;
 import com.github_branch_collector_with_database.error.IdNotFoundException;
 import com.github_branch_collector_with_database.error.OwnerNotFoundException;
-import com.github_branch_collector_with_database.response.AllForOwnerGithubRepsResponseDto;
-import com.github_branch_collector_with_database.response.AllGithubRepsResponseDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class GithubRepoRetriever {
+class GithubRepoRetriever {
     
     private final GithubRepoRepository repository;
-    private final GithubRepoMapper mapper;
     
-    public GithubRepoRetriever(GithubRepoMapper mapper, GithubRepoRepository repository) {
-        this.mapper = mapper;
+    GithubRepoRetriever(GithubRepoRepository repository) {
         this.repository = repository;
     }
     
-    public AllGithubRepsResponseDto findAll(Pageable pageable) {
-        List<GithubRepo> githubRepoList = repository.findAll(pageable);
-        return mapper.mapGithubRepoListToAllGithubRepsResponseDto(githubRepoList);
+    public List<GithubRepo> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
     
-    public AllForOwnerGithubRepsResponseDto findAllForOwner(String owner) {
+    public List<GithubRepo> findAllForOwner(String owner) {
         existsByOwner(owner);
-        List<GithubRepo> githubRepoList = repository.findAllByOwner(owner);
-        return mapper.mapGithubRepoListToAllForOwnerGithubRepsResponseDto(githubRepoList);
+        return repository.findAllByOwner(owner);
     }
     
     public GithubRepo findById(Long id) {

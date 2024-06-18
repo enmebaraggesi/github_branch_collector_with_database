@@ -1,4 +1,4 @@
-package com.github_branch_collector_with_database.service.github_repo_services;
+package com.github_branch_collector_with_database.service.github_db_services;
 
 import com.github_branch_collector_with_database.domain.GithubRepository;
 import com.github_branch_collector_with_database.domain.entity.GithubRepo;
@@ -10,25 +10,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.github_branch_collector_with_database.service.github_db_services.GithubRepoMapper.*;
+
 @Log4j2
 @Service
 public class GithubRepoDatabaseService {
     
-    private final GithubRepoMapper mapper;
     private final GithubRepoAdder adder;
     private final GithubRepoRetriever retriever;
     private final GithubRepoUpdater updater;
     private final GithubRepoDeleter deleter;
     
-    public GithubRepoDatabaseService(GithubRepoAdder adder, GithubRepoMapper mapper, GithubRepoRetriever retriever, GithubRepoUpdater updater, GithubRepoDeleter deleter) {
+    GithubRepoDatabaseService(GithubRepoAdder adder, GithubRepoRetriever retriever, GithubRepoUpdater updater, GithubRepoDeleter deleter) {
         this.adder = adder;
-        this.mapper = mapper;
         this.retriever = retriever;
         this.updater = updater;
         this.deleter = deleter;
     }
     
-    //todo bring mapping into service methods
     public void saveAllToDb(List<GithubRepository> repositories) {
         log.info("Saving {} repositories", repositories.size());
         adder.saveAll(repositories);
@@ -36,24 +35,26 @@ public class GithubRepoDatabaseService {
     
     public AllGithubRepsResponseDto findAllRepositories(Pageable pageable) {
         log.info("Finding all repositories");
-        return retriever.findAll(pageable);
+        List<GithubRepo> allRepos = retriever.findAll(pageable);
+        return mapGithubRepoListToAllGithubRepsResponseDto(allRepos);
     }
     
     public AllForOwnerGithubRepsResponseDto findAllRepositoriesForOwner(String owner) {
         log.info("Finding all repositories for owner: {}", owner);
-        return retriever.findAllForOwner(owner);
+        List<GithubRepo> allForOwner = retriever.findAllForOwner(owner);
+        return mapGithubRepoListToAllForOwnerGithubRepsResponseDto(allForOwner);
     }
     
     public PatchGithubRepoResponseDto patchRepositoryById(Long id, PatchGithubRepoRequestDto requestDto) {
         log.info("Patching repository with id: {}", id);
-        GithubRepo repoUpdate = mapper.mapPatchGithubRepoRequestDtoToGithubRepo(requestDto);
+        GithubRepo repoUpdate = mapPatchGithubRepoRequestDtoToGithubRepo(requestDto);
         GithubRepo updatedRepo = updater.updateById(id, repoUpdate);
-        return mapper.mapGithubRepoToPatchGithubRepoResponseDto(updatedRepo);
+        return mapGithubRepoToPatchGithubRepoResponseDto(updatedRepo);
     }
     
     public DeleteGithubRepoResponseDto deleteById(Long id) {
         log.info("Deleting repository with id: {}", id);
         deleter.deleteById(id);
-        return mapper.mapIdToDeleteGithubRepoResponseDto(id);
+        return mapIdToDeleteGithubRepoResponseDto(id);
     }
 }

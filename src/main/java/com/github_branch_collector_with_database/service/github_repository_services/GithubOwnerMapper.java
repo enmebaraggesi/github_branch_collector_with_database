@@ -1,4 +1,4 @@
-package com.github_branch_collector_with_database.service;
+package com.github_branch_collector_with_database.service.github_repository_services;
 
 import com.github_branch_collector_with_database.domain.GithubOwner;
 import com.github_branch_collector_with_database.received.OwnerReceivedDto;

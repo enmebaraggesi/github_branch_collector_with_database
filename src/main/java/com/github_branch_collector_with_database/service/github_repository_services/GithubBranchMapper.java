@@ -1,4 +1,4 @@
-package com.github_branch_collector_with_database.service;
+package com.github_branch_collector_with_database.service.github_repository_services;
 
 import com.github_branch_collector_with_database.domain.GithubBranch;
 import com.github_branch_collector_with_database.received.BranchReceivedDto;
@@ -11,7 +11,6 @@ import java.util.List;
 @Component
 class GithubBranchMapper {
     
-    //todo put all mappers and service into package
     static List<BranchResponseDto> mapGithubBranchListToBranchResponseDtoList(List<GithubBranch> list) {
         return list.stream()
                    .map(GithubBranchMapper::mapGithubBranchToBranchResponseDto)
