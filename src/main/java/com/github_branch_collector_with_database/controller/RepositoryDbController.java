@@ -3,6 +3,8 @@ package com.github_branch_collector_with_database.controller;
 import com.github_branch_collector_with_database.request.PatchGithubRepoRequestDto;
 import com.github_branch_collector_with_database.response.*;
 import com.github_branch_collector_with_database.service.github_repo_services.GithubRepoDatabaseService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +19,8 @@ public class RepositoryDbController {
     }
     
     @GetMapping
-    public ResponseEntity<AllGithubRepsResponseDto> getAllRepository() {
-        return ResponseEntity.ok(service.findAllRepositories());
+    public ResponseEntity<AllGithubRepsResponseDto> getAllRepository(@PageableDefault(value = 20, sort = "id") Pageable pageable) {
+        return ResponseEntity.ok(service.findAllRepositories(pageable));
     }
     
     @GetMapping("{owner}")

@@ -5,6 +5,7 @@ import com.github_branch_collector_with_database.domain.entity.GithubRepo;
 import com.github_branch_collector_with_database.request.PatchGithubRepoRequestDto;
 import com.github_branch_collector_with_database.response.*;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,9 +34,9 @@ public class GithubRepoDatabaseService {
         adder.saveAll(repositories);
     }
     
-    public AllGithubRepsResponseDto findAllRepositories() {
+    public AllGithubRepsResponseDto findAllRepositories(Pageable pageable) {
         log.info("Finding all repositories");
-        return retriever.findAll();
+        return retriever.findAll(pageable);
     }
     
     public AllForOwnerGithubRepsResponseDto findAllRepositoriesForOwner(String owner) {

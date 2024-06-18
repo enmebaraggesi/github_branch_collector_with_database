@@ -6,6 +6,7 @@ import com.github_branch_collector_with_database.error.IdNotFoundException;
 import com.github_branch_collector_with_database.error.OwnerNotFoundException;
 import com.github_branch_collector_with_database.response.AllForOwnerGithubRepsResponseDto;
 import com.github_branch_collector_with_database.response.AllGithubRepsResponseDto;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +22,8 @@ public class GithubRepoRetriever {
         this.repository = repository;
     }
     
-    public AllGithubRepsResponseDto findAll() {
-        List<GithubRepo> githubRepoList = repository.findAll();
+    public AllGithubRepsResponseDto findAll(Pageable pageable) {
+        List<GithubRepo> githubRepoList = repository.findAll(pageable);
         return mapper.mapGithubRepoListToAllGithubRepsResponseDto(githubRepoList);
     }
     

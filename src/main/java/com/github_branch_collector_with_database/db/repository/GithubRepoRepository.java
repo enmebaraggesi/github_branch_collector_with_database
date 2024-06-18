@@ -1,6 +1,7 @@
 package com.github_branch_collector_with_database.db.repository;
 
 import com.github_branch_collector_with_database.domain.entity.GithubRepo;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
@@ -12,7 +13,7 @@ public interface GithubRepoRepository extends Repository<GithubRepo, Long> {
     GithubRepo save(GithubRepo githubRepo);
     
     @Query("SELECT r FROM GithubRepo r")
-    List<GithubRepo> findAll();
+    List<GithubRepo> findAll(Pageable pageable);
     
     @Query("SELECT r FROM GithubRepo r WHERE r.owner = :owner")
     List<GithubRepo> findAllByOwner(String owner);
