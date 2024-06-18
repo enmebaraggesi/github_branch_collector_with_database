@@ -11,6 +11,7 @@ import java.util.List;
 @Component
 class GithubBranchMapper {
     
+    //todo put all mappers and service into package
     static List<BranchResponseDto> mapGithubBranchListToBranchResponseDtoList(List<GithubBranch> list) {
         return list.stream()
                    .map(GithubBranchMapper::mapGithubBranchToBranchResponseDto)

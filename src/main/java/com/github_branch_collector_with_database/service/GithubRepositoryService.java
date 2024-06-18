@@ -9,6 +9,7 @@ import com.github_branch_collector_with_database.received.RepositoryReceivedDto;
 import com.github_branch_collector_with_database.response.RepositoryResponseDto;
 import com.github_branch_collector_with_database.service.github_repo_services.GithubRepoDatabaseService;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -23,6 +24,9 @@ import static com.github_branch_collector_with_database.service.GithubRepository
 @Log4j2
 @Service
 public class GithubRepositoryService {
+    
+    @Value("${github.api.token}")
+    private String token;
     
     private final WebClient webClient;
     private final GithubRepoDatabaseService databaseService;
@@ -51,6 +55,7 @@ public class GithubRepositoryService {
         RepositoryReceivedDto[] receivedArray = webClient.get()
                                                          .uri("users/{username}/repos", username)
                                                          .accept(MediaType.APPLICATION_JSON)
+                                                         .header("Authorization", "Bearer " + token)
                                                          .retrieve()
                                                          .bodyToMono(RepositoryReceivedDto[].class)
                                                          .block();
@@ -64,6 +69,7 @@ public class GithubRepositoryService {
         String owner = repository.getOwner().getLogin();
         BranchReceivedDto[] receivedArray = webClient.get()
                                                      .uri("repos/{owner}/{repo}/branches", owner, repo)
+                                                     .header("Authorization", "Bearer " + token)
                                                      .accept(MediaType.APPLICATION_JSON)
                                                      .retrieve()
                                                      .bodyToMono(BranchReceivedDto[].class)

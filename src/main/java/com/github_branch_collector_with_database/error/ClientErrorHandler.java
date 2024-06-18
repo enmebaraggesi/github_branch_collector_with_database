@@ -27,6 +27,15 @@ public class ClientErrorHandler {
                                                      e.getMessage());
     }
     
+    @ExceptionHandler(IdNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public IdNotFoundExceptionResponseDto handleOwnerNotFoundException(IdNotFoundException e) {
+        log.error(e);
+        return new IdNotFoundExceptionResponseDto(HttpStatus.valueOf(404),
+                                                  e.getMessage());
+    }
+    
     @ExceptionHandler(XmlFormatException.class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ResponseBody
@@ -35,6 +44,4 @@ public class ClientErrorHandler {
         return new AcceptFormatExceptionResponseDto(HttpStatus.NOT_ACCEPTABLE,
                                                     "Your Accept header is invalid. Our client accepts only application/json");
     }
-    
-    
 }

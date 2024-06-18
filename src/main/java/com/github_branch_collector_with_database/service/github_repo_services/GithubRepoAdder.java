@@ -4,7 +4,6 @@ import com.github_branch_collector_with_database.db.repository.GithubRepoReposit
 import com.github_branch_collector_with_database.domain.GithubRepository;
 import com.github_branch_collector_with_database.domain.entity.GithubRepo;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,19 +19,16 @@ public class GithubRepoAdder {
     }
     
     public void save(GithubRepo repo) {
-        try {
-            GithubRepo saved = repository.save(repo);
-            log.info("Saved {} for {} under id {}", saved.getName(), saved.getOwner(), saved.getId());
-        } catch (DataIntegrityViolationException e) {
-            log.error("Error while saving repository {} - there is already one in database", repo.getName());
-        }
+        GithubRepo saved = repository.save(repo);
+        log.info("Saved {} for {} under id {}", saved.getName(), saved.getOwner(), saved.getId());
     }
     
     public void saveAll(List<GithubRepository> repos) {
-        repos.forEach(repo -> {
-                          GithubRepo githubRepo = GithubRepoMapper.mapGithubRepositoryToGithubRepo(repo);
-                          save(githubRepo);
-                      }
+        repos.forEach(
+                repo -> {
+                    GithubRepo githubRepo = GithubRepoMapper.mapGithubRepositoryToGithubRepo(repo);
+                    save(githubRepo);
+                }
         );
     }
 }
